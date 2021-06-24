@@ -104,7 +104,7 @@ bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
         }
         if (alltrue == 1)
         {
-            cout << endl << "Tim duoc trang thai an toàn" << endl;
+            cout << endl << "Tim duoc trang thai an toÃ n" << endl;
             cout << "trang thai la: ";
             for (int k = 0; k < end; k++)
                 cout << "P" << seq[k] << ' ';

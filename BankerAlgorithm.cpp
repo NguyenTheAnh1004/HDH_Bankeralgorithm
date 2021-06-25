@@ -22,36 +22,39 @@ void gotoxy(int x, int y)
 /*xy for menu end*/
 
 /*compare begin*/
-bool LittleOrEqual(const int* need, const int* work, int m)
+bool LessEqual(const int* need, const int* work, int m)
 {
     for (int i = 1; i <= m; i++)
     {
-        if (need[i] > work[i])
+        if (need[i] > work[i]){
             return false;
+        }
     }
     return true;
 }
 /*compare end*/
 
 /*calculation begin*/
-void Add(int* work, const int* allocation, int m)
+void Add(int* work, const int* allo, int m)
 {
-    for (int i = 1; i <= m; i++)
-        work[i] += allocation[i];
+    for (int i = 1; i <= m; i++){
+        work[i] += allo[i];
+    }
 }
 void Sub(int* des, const int* src, int m)
 {
-    for (int i = 1; i <= m; i++)
+    for (int i = 1; i <= m; i++){
         des[i] -= src[i];
+    }
 }
 /*calculation end*/
 
 /*BankerAlgrithm begin*/
-bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
+bool Banker(int*& aval, int** allo, int**& need, int m, int n)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     int i;
-    int alltrue, find;
+    int correct, find;
 
     int* work = new int[m + 1];
     int* seq, end = 0;
@@ -61,18 +64,19 @@ bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
     for (i = 1; i <= n; i++)
         finish[i] = false;
 
-    for (i = 1; i <= m; i++)
-        work[i] = avaliable[i];
+    for (i = 1; i <= m; i++){
+        work[i] = aval[i];
+    }
 
-    while (1)
+    while (true)
     {
         find = 0;
-        alltrue = 1;
+        correct = 1;
         for (i = 1; i <= n; i++)
         {
             if (finish[i] == false)
             {
-                if (LittleOrEqual(need[i], work, m))
+                if (LessEqual(need[i], work, m))
                 {
                     cout << "Chon: P" << i << " Vi Need( ";
                     for (int k = 1; k <= m; k++) {
@@ -86,7 +90,7 @@ bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
                     cout << ")" << endl;
                     cout << "Work = Work + Allocation = ( ";
                     for (int k = 1; k <= m; k++) {
-                        work[k] += allocation[i][k];
+                        work[k] += allo[i][k];
                         cout << work[k] << " ";
                     }
                     cout << ")" << endl;
@@ -98,13 +102,13 @@ bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
                 }
                 else
                 {
-                    alltrue = 0;
+                    correct = 0;
                 }
             }
         }
-        if (alltrue == 1)
+        if (correct == 1)
         {
-            cout << endl << "Tim duoc trang thai an toÃ n" << endl;
+            cout << endl << "Tim duoc trang thai an toàn" << endl;
             cout << "trang thai la: ";
             for (int k = 0; k < end; k++)
                 cout << "P" << seq[k] << ' ';
@@ -128,21 +132,20 @@ bool Banker(int*& avaliable, int** allocation, int**& need, int m, int n)
 /*BankerAlgrithm end*/
 
 /*Import Status begin */
-void ImportStatus(int*& avaliable, int**& max, int**& allocation, int**& need, int m, int n)
-{
+void ImportStatus(int*& aval, int**& max, int**& allo, int**& need, int m, int n){
 
     int i;
     int j;
     try
     {
-        avaliable = new int[m + 1];
+        aval = new int[m + 1];
         max = new int* [n + 1];
-        allocation = new int* [n + 1];
+        allo = new int* [n + 1];
         need = new int* [n + 1];
         for (i = 1; i <= n; i++)
         {
             max[i] = new int[m + 1];
-            allocation[i] = new int[m + 1];
+            allo[i] = new int[m + 1];
             need[i] = new int[m + 1];
         }
     }
@@ -153,7 +156,7 @@ void ImportStatus(int*& avaliable, int**& max, int**& allocation, int**& need, i
     }
     cout << endl << "nhap trang thai ban dau cua " << m << " tai nguyen (AVAILABLE) : ";
     for (i = 1; i <= m; i++)
-        cin >> avaliable[i];
+        cin >> aval[i];
     cout << endl << "Nhap bang MAX : " << endl;
     for (i = 1; i <= n; i++)
     {
@@ -166,27 +169,27 @@ void ImportStatus(int*& avaliable, int**& max, int**& allocation, int**& need, i
     {
         cout << "P" << i << " : ";
         for (j = 1; j <= m; j++)
-            cin >> allocation[i][j];
+            cin >> allo[i][j];
     }
     for (i = 1; i <= n; i++)
     {
         for (j = 1; j <= m; j++)
-            need[i][j] = max[i][j] - allocation[i][j];
+            need[i][j] = max[i][j] - allo[i][j];
     }
     cout << endl;
 }
 /*Import Status end */
 
 /* Print Status begin */
-void PrintStatus(int* avaliable, int** max, int** allocation, int** need, int m, int n)
-{
+void Print(int* aval, int** max, int** allo, int** need, int m, int n){
+	
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     int i, j;
     SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_INTENSITY);
     cout << endl << "Avaliable : ";
     SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
     for (i = 1; i <= m; i++)
-        cout << avaliable[i] << ' ';
+        cout << aval[i] << ' ';
     cout << endl;
     //cout << "PROCESS    " << "    MAX    " << "    ALLOCATION    " << "    NEED    " << endl;
     for (i = 1; i <= n; i++)
@@ -198,20 +201,23 @@ void PrintStatus(int* avaliable, int** max, int** allocation, int** need, int m,
         color(12);
         cout << "MAX : ";
         color(7);
-        for (j = 1; j <= m; j++)
+        for (j = 1; j <= m; j++){
             cout << max[i][j] << ' ';
+        }
         cout << "  ";
         color(12);
         cout << "ALLOCATION : ";
         color(7);
-        for (j = 1; j <= m; j++)
-            cout << allocation[i][j] << ' ';
+        for (j = 1; j <= m; j++){
+            cout << allo[i][j] << ' ';
+        }
         cout << "  ";
         color(12);
         cout << "NEED : ";
         color(7);
-        for (j = 1; j <= m; j++)
+        for (j = 1; j <= m; j++){
             cout << need[i][j] << ' ';
+        }
         cout << "  ";
         cout << endl;
     }
@@ -220,14 +226,14 @@ void PrintStatus(int* avaliable, int** max, int** allocation, int** need, int m,
 /* Print Status end */
 
 //Destroy
-void Destroy(int* avaliable, int** max, int** allocation, int** need, int n)
+void Destroy(int* aval, int** max, int** allo, int** need, int n)
 {
     int i;
-    delete avaliable;
+    delete aval;
     for (i = 0; i <= n; i++)
     {
         delete max[i];
-        delete allocation[i];
+        delete allo[i];
         delete need[i];
     }
 }
@@ -241,20 +247,19 @@ int main()
     char key;
     while (true) {
 
-        int* avaliable;
-        int** max, ** allocation, ** need;
+        int* aval;
+        int** max, ** allo, ** need;
         int m, n, i;
-        int select;
-        //bool torf;
+        
         color(12);
         cout<<setw(30)<<right<<"banker algorithm"<<endl;
         color(7);
         cout << "Nhap so luong tai nguyen (R) : ";    cin >> m;
         cout << "Nhap so luong tien trinh (P) : ";     cin >> n;
-        ImportStatus(avaliable, max, allocation, need, m, n);
+        ImportStatus(aval, max, allo, need, m, n);
         system("cls");
-        PrintStatus(avaliable, max, allocation, need, m, n);
-        Banker(avaliable, allocation, need, m, n);
+        Print(aval, max, allo, need, m, n);
+        Banker(aval, allo, need, m, n);
 
         while (true)
         {
@@ -338,7 +343,7 @@ int main()
                 if (counter == 0)
                 {
                     system("cls");
-                    PrintStatus(avaliable, max, allocation, need, m, n);
+                    Print(aval, max, allo, need, m, n);
                     cout << "Yeu cau tien trinh (Process): ";   cin >> proc;
                     while (proc > n || proc < 0)
                     {
@@ -351,29 +356,29 @@ int main()
                     cout << endl;
 
                     //			system("cls");
-                    if (LittleOrEqual(request, need[proc], m) && LittleOrEqual(request, avaliable, m))
+                    if (LessEqual(request, need[proc], m) && LessEqual(request, aval, m))
                     {
                         system("cls");
-                        Add(allocation[proc], request, m);
+                        Add(allo[proc], request, m);
                         Sub(need[proc], request, m);
-                        Sub(avaliable, request, m);
+                        Sub(aval, request, m);
                         cout << "Tien trinh P" << proc << " co yeu cau tai nguyen la: ( ";
                         for (i = 1; i <= m; i++)
                             cout << request[i] << " ";
                         cout << ")" << endl;
                         cout << "trang thai moi la : " << endl;
         
-                        PrintStatus(avaliable, max, allocation, need, m, n);
+                        Print(aval, max, allo, need, m, n);
 
-                        if (!Banker(avaliable, allocation, need, m, n))
+                        if (!Banker(aval, allo, need, m, n))
                         {
                             cout << "Tien trinh yeu cau tai nguyen khong duoc dap ung" << endl;
                             cout << "Doi de phuc hoi trang thai ......" << endl;
-                            Sub(allocation[proc], request, m);
+                            Sub(allo[proc], request, m);
                             Add(need[proc], request, m);
-                            Add(avaliable, request, m);
+                            Add(aval, request, m);
                             cout << "Phuc hoi trang thai :" << endl;
-                            PrintStatus(avaliable, max, allocation, need, m, n);
+                            Print(aval, max, allo, need, m, n);
                         }
                     }
                     else

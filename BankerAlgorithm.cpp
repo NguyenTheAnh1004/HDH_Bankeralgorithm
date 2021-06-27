@@ -155,26 +155,30 @@ void ImportStatus(int*& aval, int**& max, int**& allo, int**& need, int m, int n
         exit(0);
     }
     cout << endl << "nhap trang thai ban dau cua " << m << " tai nguyen (AVAILABLE) : ";
-    for (i = 1; i <= m; i++)
+    for (i = 1; i <= m; i++){
         cin >> aval[i];
+    }
     cout << endl << "Nhap bang MAX : " << endl;
     for (i = 1; i <= n; i++)
     {
         cout << "P" << i << " : ";
-        for (j = 1; j <= m; j++)
+        for (j = 1; j <= m; j++){
             cin >> max[i][j];
+        }
     }
     cout << endl << "Nhap bang ALLOCATION: " << endl;
     for (i = 1; i <= n; i++)
     {
         cout << "P" << i << " : ";
-        for (j = 1; j <= m; j++)
+        for (j = 1; j <= m; j++){
             cin >> allo[i][j];
+        }
     }
     for (i = 1; i <= n; i++)
     {
-        for (j = 1; j <= m; j++)
+        for (j = 1; j <= m; j++){
             need[i][j] = max[i][j] - allo[i][j];
+        }
     }
     cout << endl;
 }
@@ -254,8 +258,10 @@ int main()
         color(12);
         cout<<setw(30)<<right<<"banker algorithm"<<endl;
         color(7);
-        cout << "Nhap so luong tai nguyen (R) : ";    cin >> m;
-        cout << "Nhap so luong tien trinh (P) : ";     cin >> n;
+        cout << "Nhap so luong tai nguyen (R) : ";    
+		cin >> m;
+        cout << "Nhap so luong tien trinh (P) : ";     
+		cin >> n;
         ImportStatus(aval, max, allo, need, m, n);
         system("cls");
         Print(aval, max, allo, need, m, n);

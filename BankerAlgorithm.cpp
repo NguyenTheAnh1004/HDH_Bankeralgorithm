@@ -57,8 +57,8 @@ bool Banker(int*& aval, int** allo, int**& need, int m, int n)
     int correct, find;
 
     int* work = new int[m + 1];
-    int* seq, end = 0;
-    seq = new int[n];
+    int* sq, end = 0;
+    sq = new int[n];
     bool* finish;
     finish = new bool[n + 1];
     for (i = 1; i <= n; i++)
@@ -98,7 +98,7 @@ bool Banker(int*& aval, int** allo, int**& need, int m, int n)
 
                     finish[i] = true;
                     find = 1;
-                    seq[end++] = i;
+                    sq[end++] = i;
                 }
                 else
                 {
@@ -110,11 +110,13 @@ bool Banker(int*& aval, int** allo, int**& need, int m, int n)
         {
             cout << endl << "Tim duoc trang thai an toàn" << endl;
             cout << "trang thai la: ";
-            for (int k = 0; k < end; k++)
-                cout << "P" << seq[k] << ' ';
+            for (int k = 0; k < end; k++){
+                cout << "P" << sq[k] << " ";
+                if(k<end-1) cout<<"->";
+            }
             cout << endl;
             delete work;
-            delete seq;
+            delete sq;
             delete finish;
             return true;
         }
@@ -122,7 +124,7 @@ bool Banker(int*& aval, int** allo, int**& need, int m, int n)
         {
             cout << "Khong co trang thai an toan xay ra DEADLOCK" << endl;
             delete work;
-            delete seq;
+            delete sq;
             delete finish;
             return false;
         }
@@ -228,19 +230,6 @@ void Print(int* aval, int** max, int** allo, int** need, int m, int n){
     cout << endl;
 }
 /* Print Status end */
-
-//Destroy
-void Destroy(int* aval, int** max, int** allo, int** need, int n)
-{
-    int i;
-    delete aval;
-    for (i = 0; i <= n; i++)
-    {
-        delete max[i];
-        delete allo[i];
-        delete need[i];
-    }
-}
 
 int main()
 {
